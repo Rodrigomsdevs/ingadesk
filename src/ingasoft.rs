@@ -1,4 +1,4 @@
-use hbb_common::config;
+use hbb_common::{config, log};
 use std::collections::HashMap;
 
 // Embedded at build time so the server and key stay fixed in the shipped binary.
