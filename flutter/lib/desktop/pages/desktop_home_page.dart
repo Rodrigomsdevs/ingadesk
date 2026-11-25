@@ -12,6 +12,7 @@ import 'package:flutter_hbb/consts.dart';
 import 'package:flutter_hbb/desktop/pages/connection_page.dart';
 import 'package:flutter_hbb/desktop/pages/desktop_setting_page.dart';
 import 'package:flutter_hbb/desktop/pages/desktop_tab_page.dart';
+import 'package:flutter_hbb/desktop/pages/ingadesk_home.dart';
 import 'package:flutter_hbb/desktop/widgets/update_progress.dart';
 import 'package:flutter_hbb/models/platform_model.dart';
 import 'package:flutter_hbb/models/server_model.dart';
@@ -60,14 +61,26 @@ class _DesktopHomePageState extends State<DesktopHomePage>
     super.build(context);
     final isIncomingOnly = bind.isIncomingOnly();
     return _buildBlock(
-        child: Row(
+        child: _buildIngaDeskHome(Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         buildLeftPane(context),
         if (!isIncomingOnly) const VerticalDivider(width: 1),
         if (!isIncomingOnly) Expanded(child: buildRightPane(context)),
       ],
-    ));
+    )));
+  }
+
+  // The stock panes stay mounted but hidden: ConnectionPage handles the main
+  // window close and deep-link connects.
+  Widget _buildIngaDeskHome(Widget stock) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        ExcludeFocus(child: Offstage(child: stock)),
+        const IngaDeskHome(),
+      ],
+    );
   }
 
   Widget _buildBlock({required Widget child}) {
